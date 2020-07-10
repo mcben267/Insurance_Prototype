@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">Bismart</string>
+
+
+    <string name="api_key">AIzaSyCOmck4TZtKGQnKmoj1VH0_Xv0YQTAZffI</string>
+    
+    <string-array name="city">
+        <item>Nairobi</item>
+        <item>Mombasa</item>
+    </string-array>
+
+    <string-array name="Nairobi">
+        <item>CBD</item>
+        <item>Westlands</item>
+        <item>Dagoretti North</item>
+        <item>Dagoretti South</item>
+        <item>Langata</item>
+        <item>Kibra</item>
+        <item>Roysambu</item>
+        <item>Kasarani</item>
+        <item>Ruaraka</item>
+        <item>Embakasi South</item>
+        <item>Embakasi North</item>
+        <item>Embakasi Central</item>
+        <item>Embakasi East</item>
+        <item>Embakasi West</item>
+        <item>Makadara</item>
+        <item>Kamukunji</item>
+        <item>Starehe</item>
+        <item>Mathare</item>
+    </string-array>
+
+    <string-array name="Mombasa">
+        <item>CBD</item>
+        <item>Changamwe</item>
+        <item>Jomvu</item>
+        <item>Kisauni</item>
+        <item>Nyali</item>
+        <item>Likoni</item>
+        <item>Mvita</item>
+    </string-array>
+    
+</resources>

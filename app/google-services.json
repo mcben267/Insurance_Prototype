@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1085168027125",
+    "firebase_url": "https://bismart-282700.firebaseio.com",
+    "project_id": "bismart-282700",
+    "storage_bucket": "bismart-282700.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1085168027125:android:f7bf42e87fa10c120cccbc",
+        "android_client_info": {
+          "package_name": "com.cliffdevops.alpha.bismartapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1085168027125-fgs5lkej4hfthkl9q9md9286vqlivg9j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGXI-1ZIYSBG-_kxm62sbCUqwuOelWW8Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1085168027125-fgs5lkej4hfthkl9q9md9286vqlivg9j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
