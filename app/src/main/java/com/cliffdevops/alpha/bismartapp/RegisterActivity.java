@@ -61,6 +61,7 @@ public class RegisterActivity extends AppCompatActivity {
     public void onBackPressed() {
         Intent intent = new Intent(RegisterActivity.this,LandingPage.class);
         startActivity(intent);
+        finish();
     }
 
     private Boolean validateForm() {
