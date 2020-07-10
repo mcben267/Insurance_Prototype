@@ -57,6 +57,12 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(RegisterActivity.this,LandingPage.class);
+        startActivity(intent);
+    }
+
     private Boolean validateForm() {
         validateName();
         validateSurname();
