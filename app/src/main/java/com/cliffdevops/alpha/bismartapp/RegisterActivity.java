@@ -2,7 +2,11 @@ package com.cliffdevops.alpha.bismartapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,7 +16,12 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import org.apache.commons.lang3.RandomStringUtils;
+
 import java.nio.ByteBuffer;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.UUID;
 
 import okhttp3.OkHttpClient;
@@ -21,10 +30,16 @@ import okhttp3.Response;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private EditText name,surname,email,mobile,password,confirmPassword;
-    private Button register;
-    private String Name,Surname,Mobile,Email,Password;
     ProgressBar progressBar;
+    private EditText name, surname, email, mobile, password, confirmPassword;
+    private Button register;
+    private String Name, Surname, Mobile, Email, Password;
+
+    public static String shortUUID() {
+        UUID uuid = UUID.randomUUID();
+        long l = ByteBuffer.wrap(uuid.toString().getBytes()).getLong();
+        return Long.toString(l, Character.MAX_RADIX);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,19 +62,32 @@ public class RegisterActivity extends AppCompatActivity {
                 Surname = surname.getText().toString().trim();
                 Mobile = mobile.getText().toString().trim();
                 Email = email.getText().toString().trim();
+                String currentDate = new SimpleDateFormat("yyyy-MM-dd",
+                        Locale.getDefault()).format(new Date());
 
-                if(validateForm().equals(true)) {
-                    register.setVisibility(View.INVISIBLE);
-                    new RegisterUser().execute(shortUUID(),Name,Surname,Mobile,Email,Password);
+                if (validateForm().equals(true)) {
+                    if (isOnline()) {
+                        register.setVisibility(View.INVISIBLE);
+                        new RegisterUser().execute(shortUUID(), Name, Surname, Mobile, Email, Password, randomCode(), currentDate);
+                    } else {
+                        showToast("Error:\tCheck Internet Connection");
+                    }
                 }
             }
         });
 
     }
 
+    public boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        assert cm != null;
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(RegisterActivity.this,LandingPage.class);
+        Intent intent = new Intent(RegisterActivity.this, LandingPage.class);
         startActivity(intent);
         finish();
     }
@@ -128,8 +156,13 @@ public class RegisterActivity extends AppCompatActivity {
             mobile.setError("Field cannot be empty");
             return false;
         } else {
-            mobile.setError(null);
-            return true;
+            if (val.length() == 10) {
+                mobile.setError(null);
+                return true;
+            } else {
+                mobile.setError("Invalid mobile number");
+                return false;
+            }
         }
     }
 
@@ -161,7 +194,7 @@ public class RegisterActivity extends AppCompatActivity {
                 confirmPassword.setError(null);
                 return true;
             } else {
-                String error_msg= "Password requirements: letter, digit, at least 6 characters" ;
+                String error_msg = "Password requirements: letter, digit, at least 6 characters";
                 password.setError(error_msg);
                 confirmPassword.setError(error_msg);
                 return false;
@@ -171,6 +204,22 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
+    protected String randomCode() {
+        int length = 6;
+        return RandomStringUtils.random(length, false, true);
+    }
+
+    public void showToast(final String Text) {
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(RegisterActivity.this,
+                        Text, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    @SuppressLint("StaticFieldLeak")
     public class RegisterUser extends AsyncTask<String, Void, String> {
 
         @Override
@@ -180,15 +229,24 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
         @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            register.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.INVISIBLE);
+        }
+
+        @Override
         protected String doInBackground(String... strings) {
 
-            String url_Register="https://myloanapp.000webhostapp.com/bismartregister.php";
+            String url_Register = "https://myloanapp.000webhostapp.com/bismartregister.php";
             String Client_ID = strings[0];
             String FirstName = strings[1];
             String LastName = strings[2];
             String Mobile = strings[3];
             String Email = strings[4];
             String Password = strings[5];
+            String OTP = strings[6];
+            String date = strings[7];
 
             String finalURL = url_Register +
                     "?user_id=" + Client_ID +
@@ -196,12 +254,12 @@ public class RegisterActivity extends AppCompatActivity {
                     "&lastname=" + LastName +
                     "&mobile=" + Mobile +
                     "&email=" + Email +
-                    "&password=" + Password;
-
-            Log.d("RegisterActivity", "Params " + finalURL);
+                    "&password=" + Password +
+                    "&date=" + date +
+                    "&otp=" + OTP;
 
             try {
-                OkHttpClient okHttpClient= new OkHttpClient();
+                OkHttpClient okHttpClient = new OkHttpClient();
                 Request request = new Request.Builder()
                         .url(finalURL)
                         .build();
@@ -211,6 +269,8 @@ public class RegisterActivity extends AppCompatActivity {
                     response = okHttpClient.newCall(request).execute();
                     if (response.isSuccessful()) {
                         String result = response.body().string();
+
+                        Log.d("test", "OTP " + OTP + " " + result);
 
                         if (result.equalsIgnoreCase("User registered successfully")) {
                             showToast("Register successful");
@@ -228,7 +288,7 @@ public class RegisterActivity extends AppCompatActivity {
                     e.printStackTrace();
                     showToast("Error: Check Internet");
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 showToast("Fatal Error !");
             }
@@ -236,27 +296,7 @@ public class RegisterActivity extends AppCompatActivity {
             return null;
         }
 
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            register.setVisibility(View.VISIBLE);
-            progressBar.setVisibility(View.INVISIBLE);
-        }
+
     }
 
-    public static String shortUUID() {
-        UUID uuid = UUID.randomUUID();
-        long l = ByteBuffer.wrap(uuid.toString().getBytes()).getLong();
-        return Long.toString(l, Character.MAX_RADIX);
-    }
-
-    public void showToast(final String Text){
-        this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(RegisterActivity.this,
-                        Text, Toast.LENGTH_LONG).show();
-            }
-        });
-    }
 }

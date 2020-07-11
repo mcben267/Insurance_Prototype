@@ -3,7 +3,7 @@
 
 
     <string name="api_key">AIzaSyCOmck4TZtKGQnKmoj1VH0_Xv0YQTAZffI</string>
-    
+
     <string-array name="city">
         <item>Nairobi</item>
         <item>Mombasa</item>
@@ -39,5 +39,12 @@
         <item>Likoni</item>
         <item>Mvita</item>
     </string-array>
-    
+
+
+    <string name="otp_title">Please enter the 6 digit verification code</string>
+    <string name="otp_button_text">VERIFY</string>
+    <string name="resend_msg">Didn’t receive the OTP?</string>
+    <string name="resend_again_msg">Resend again</string>
+    <string name="sent_to_91_xxxx_xxx">sent to +91 XXXX XXX</string>
+
 </resources>

@@ -47,7 +47,7 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar_help" />
 
     <TextView
-        android:id="@+id/textView26"
+        android:id="@+id/btnHotline"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="35dp"
@@ -60,7 +60,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView17" />
 
     <TextView
-        android:id="@+id/textView28"
+        android:id="@+id/btnSendFeed"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="35dp"
@@ -70,23 +70,23 @@
         android:text="Send Feedback"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView26" />
+        app:layout_constraintTop_toBottomOf="@+id/btnHotline" />
 
     <TextView
         android:id="@+id/textView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="241dp"
+        android:layout_marginTop="150dp"
         android:text="Version: Prototype"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView28" />
+        app:layout_constraintTop_toBottomOf="@+id/btnSendFeed" />
 
     <TextView
         android:id="@+id/textView10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="59dp"
+        android:layout_marginTop="40dp"
         android:drawableStart="@drawable/ic_copyright"
         android:drawablePadding="10dp"
         android:text="Cliff DevOps"

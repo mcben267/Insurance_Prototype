@@ -128,7 +128,6 @@ public class AgentViewAdapter extends RecyclerView.Adapter<AgentViewAdapter.Agen
     }
 
     public void makePhoneCall() {
-        //Dial agent number
         String dial = "tel:" + number;
         context.startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse(dial)));
     }

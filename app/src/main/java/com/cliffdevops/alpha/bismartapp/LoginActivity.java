@@ -3,11 +3,15 @@ package com.cliffdevops.alpha.bismartapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,10 +25,11 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class LoginActivity extends AppCompatActivity {
+
     private SharedPreferences pref;
     private ProgressBar progressBar;
+    private EditText email, password;
     private Button login;
-    private String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,33 +38,33 @@ public class LoginActivity extends AppCompatActivity {
         pref = getSharedPreferences("login", MODE_PRIVATE);
 
         progressBar = findViewById(R.id.progressBar);
-        final EditText email = findViewById(R.id.txtUserEmail);
-        final EditText password = findViewById(R.id.txtUserPassword);
+        email = findViewById(R.id.txtUserEmail);
+        password = findViewById(R.id.txtUserPassword);
         login = findViewById(R.id.btnlogin);
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if (!email.getText().toString().isEmpty() && !password.getText().toString().isEmpty()) {
-                    if (email.getText().toString().trim().matches(emailPattern)) {
+                String Email = email.getText().toString().trim();
+                String Password = password.getText().toString().trim();
 
-                        String Email = email.getText().toString().trim();
-                        String Password = password.getText().toString().trim();
-
-                        progressBar.setVisibility(View.VISIBLE);
-                        login.setVisibility(View.INVISIBLE);
+                if (validateForm().equals(true)) {
+                    if(isOnline()){
                         new LoginUser().execute(Email, Password);
-
-                    } else {
-                       showToast( "Invalid email address");
+                    }else{
+                        showToast("Error:\tCheck Internet Connection");
                     }
-                } else {
-                    showToast("Please fill any empty fields...");
                 }
-
             }
         });
+    }
+
+    public boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        assert cm != null;
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
     public void showToast(final String Text) {
@@ -79,15 +84,60 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 
+    @Override
+    public boolean onKeyLongPress(int keyCode, KeyEvent event) {
+        return false;
+    }
+
+    private Boolean validateForm() {
+
+        validateEmail();
+        validatePassword();
+
+        return validateEmail().equals(true) && validatePassword().equals(true);
+    }
+
+    private Boolean validateEmail() {
+        String val = email.getEditableText().toString().trim();
+        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+
+        if (val.isEmpty()) {
+            email.setError("Field cannot be empty");
+            return false;
+        } else if (!val.matches(emailPattern)) {
+            email.setError("Invalid email address");
+            return false;
+        } else {
+            email.setError(null);
+            //emailId.setErrorEnabled(false);
+            return true;
+        }
+    }
+
+    private Boolean validatePassword() {
+        String val = password.getEditableText().toString().trim();
+        if (val.isEmpty()) {
+            password.setError("Field cannot be empty");
+            return false;
+        } else {
+            password.setError(null);
+            return true;
+        }
+    }
+
     @SuppressLint("StaticFieldLeak")
     public class LoginUser extends AsyncTask<String, Void, String> {
 
         @Override
+        protected void onPreExecute() {
+            progressBar.setVisibility(View.VISIBLE);
+            login.setVisibility(View.INVISIBLE);
+        }
+
+        @Override
         protected void onPostExecute(String s) {
-            super.onPostExecute(s);
             progressBar.setVisibility(View.GONE);
             login.setVisibility(View.VISIBLE);
-
         }
 
         @Override
@@ -97,10 +147,7 @@ public class LoginActivity extends AppCompatActivity {
             String url_user = "https://myloanapp.000webhostapp.com/bismartlogin.php";
 
             String finalURL = url_user +
-                    "?&email=" + Email +
-                    "&password=" + Password;
-
-            Log.d("LoginActivity", "Params" + finalURL);
+                    "?&email=" + Email + "&password=" + Password;
 
             try {
                 OkHttpClient okHttpClient = new OkHttpClient();
@@ -112,31 +159,35 @@ public class LoginActivity extends AppCompatActivity {
                     if (response.isSuccessful()) {
                         String result = response.body().string();
 
-                        Log.d("LoginActivity", "Response " + result);
-
-
                         if (result.equals("error")) {
                             showToast("Email or Password mismatched!");
-
                         } else {
+
                             JSONObject root = new JSONObject(result);
                             String UserID = root.getString("user_id");
                             String Name = root.getString("firstname");
                             String Surname = root.getString("lastname");
                             String UserEmail = root.getString("email");
                             String Mobile = root.getString("mobile");
+                            String Status = root.getString("status");
 
-
-                            pref.edit().putBoolean("logged", true).apply();
                             pref.edit().putString("name", Name).apply();
                             pref.edit().putString("userID", UserID).apply();
                             pref.edit().putString("surname", Surname).apply();
                             pref.edit().putString("email", UserEmail).apply();
                             pref.edit().putString("mobile", Mobile).apply();
+                            pref.edit().putString("status", Status).apply();
 
-                            Intent i = new Intent(LoginActivity.this, HomeActivity.class);
-                            startActivity(i);
-                            finish();
+                            if(Status.equals("incomplete")) {
+                                Intent i = new Intent(LoginActivity.this,AccountVerificationActivity.class);
+                                startActivity(i);
+                                finish();
+                            }else if(Status.equals("verified")){
+                                pref.edit().putBoolean("logged", true).apply();
+                                Intent i = new Intent(LoginActivity.this, HomeActivity.class);
+                                startActivity(i);
+                                finish();
+                            }
                         }
                     }
                 } catch (Exception e) {
