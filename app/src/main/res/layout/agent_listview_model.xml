@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/agentView"
@@ -21,7 +20,7 @@
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_account"
+            app:srcCompat="@drawable/logo"
             tools:ignore="VectorDrawableCompat" />
 
         <TextView
@@ -76,57 +75,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/agentProfilePic" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/optionView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="7dp"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider">
 
-            <TextView
-                android:id="@+id/btnCall"
-                android:layout_width="100dp"
-                android:layout_height="45dp"
-                android:layout_marginStart="116dp"
-                android:layout_marginTop="18dp"
-                android:layout_marginBottom="5dp"
-                android:background="@drawable/text_background"
-                android:drawableStart="@drawable/ic_call"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="Call"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/divider"
-                tools:ignore="NotSibling" />
-
-            <TextView
-                android:id="@+id/btnMeet"
-                android:layout_width="100dp"
-                android:layout_height="45dp"
-                android:layout_marginStart="70dp"
-                android:layout_marginTop="18dp"
-                android:layout_marginEnd="56dp"
-                android:layout_marginBottom="5dp"
-                android:background="@drawable/text_background"
-                android:drawableStart="@drawable/ic_location"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="Meet"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/btnCall"
-                app:layout_constraintTop_toBottomOf="@+id/divider"
-                tools:ignore="NotSibling" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ImageView
             android:id="@+id/imageView"

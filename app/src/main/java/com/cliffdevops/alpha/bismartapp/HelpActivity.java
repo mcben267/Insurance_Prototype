@@ -18,7 +18,6 @@ import android.widget.Toast;
 public class HelpActivity extends AppCompatActivity {
 
     private static final int REQUEST_CALL = 1;
-    private TextView toll, feedback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +25,8 @@ public class HelpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_help);
 
         ImageView back = findViewById(R.id.btnBack);
-        toll = findViewById(R.id.btnHotline);
-        feedback = findViewById(R.id.btnSendFeed);
+        TextView toll = findViewById(R.id.btnHotline);
+        TextView feedback = findViewById(R.id.btnSendFeed);
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,4 +96,5 @@ public class HelpActivity extends AppCompatActivity {
             }
         }
     }
+
 }

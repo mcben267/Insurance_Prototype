@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -131,10 +132,19 @@ public class HomeActivity extends AppCompatActivity implements InsuranceViewAdap
         mAdapter.notifyDataSetChanged();
     }
 
+    public void showToast(final String Text) {
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(HomeActivity.this,
+                        Text, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
 
     @Override
     public void onNoteClick(String position) {
-        Intent i = new Intent(HomeActivity.this,SearchActivity.class);
+        Intent i = new Intent(HomeActivity.this, SearchActivity.class);
         startActivity(i);
         finish();
     }

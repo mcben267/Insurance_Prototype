@@ -172,7 +172,7 @@ public class LoginActivity extends AppCompatActivity {
                             String Status = root.getString("status");
 
                             pref.edit().putString("name", Name).apply();
-                            pref.edit().putString("userID", UserID).apply();
+                            pref.edit().putString("user_id", UserID).apply();
                             pref.edit().putString("surname", Surname).apply();
                             pref.edit().putString("email", UserEmail).apply();
                             pref.edit().putString("mobile", Mobile).apply();

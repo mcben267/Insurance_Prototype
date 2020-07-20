@@ -9,11 +9,11 @@ public class AgentItem {
     private String score;
     private String location;
     private String mobile;
-    private double Lat_coordinate;
-    private double Lng_coordinate;
+    private String Lat_coordinate;
+    private String Lng_coordinate;
 
     public AgentItem(String uniqueID, String name, String agency, String score, String location,
-                     String mobile, double Lat_coordinate, double Lng_coordinate,int imageURL) {
+                     String mobile, String Lat_coordinate, String Lng_coordinate) {
 
         this.uniqueID = uniqueID;
         this.name = name;
@@ -74,19 +74,19 @@ public class AgentItem {
         this.mobile = mobile;
     }
 
-    public double getLat_coordinate() {
+    public String getLat_coordinate() {
         return Lat_coordinate;
     }
 
-    public void setLat_coordinate(double lat_coordinate) {
+    public void setLat_coordinate(String lat_coordinate) {
         Lat_coordinate = lat_coordinate;
     }
 
-    public double getLng_coordinate() {
+    public String getLng_coordinate() {
         return Lng_coordinate;
     }
 
-    public void setLng_coordinate(double lng_coordinate) {
+    public void setLng_coordinate(String lng_coordinate) {
         Lng_coordinate = lng_coordinate;
     }
 

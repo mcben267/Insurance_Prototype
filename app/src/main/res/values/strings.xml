@@ -5,11 +5,13 @@
     <string name="api_key">AIzaSyCOmck4TZtKGQnKmoj1VH0_Xv0YQTAZffI</string>
 
     <string-array name="city">
+        <item>Select</item>
         <item>Nairobi</item>
         <item>Mombasa</item>
     </string-array>
 
     <string-array name="Nairobi">
+        <item>Select</item>
         <item>CBD</item>
         <item>Westlands</item>
         <item>Dagoretti North</item>
@@ -31,6 +33,7 @@
     </string-array>
 
     <string-array name="Mombasa">
+        <item>Select</item>
         <item>CBD</item>
         <item>Changamwe</item>
         <item>Jomvu</item>
