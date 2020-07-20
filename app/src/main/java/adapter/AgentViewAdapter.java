@@ -77,17 +77,18 @@ public class AgentViewAdapter extends RecyclerView.Adapter<AgentViewAdapter.Agen
             String Agency = item.getAgency();
             String Place = item.getLocation();
             String Mobile = item.getMobile();
-            String latitude = item.getLat_coordinate();
-            String longitude = item.getLng_coordinate();
+            String Policies = item.getPolicies();
+            double Latitude = item.getLat_coordinate();
+            double Longitude = item.getLng_coordinate();
 
-            mOnAgentListener.onItemClicked(Name, Agency, Place, Mobile, latitude, longitude);
+            mOnAgentListener.onItemClicked(Name, Agency, Place, Mobile, Latitude, Longitude, Policies);
 
         }
     }
 
     public interface OnAgentListener {
-        void onItemClicked(String Name, String Agency, String Location, String Mobile, String Latitude,
-                           String Longitude);
+        void onItemClicked(String Name, String Agency, String Location, String Mobile, double Latitude,
+                           double Longitude, String Policies);
     }
 
 }

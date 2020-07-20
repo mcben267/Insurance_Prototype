@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,13 +25,18 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.Objects;
 
 public class ResultsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private SharedPreferences pref;
     private String number, place;
+    private MarkerOptions markerOptions;
+    private CircleOptions circleOptions;
     private double latitude, longitude;
     private static final int REQUEST_CALL = 1;
 
@@ -45,9 +49,10 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
         TextView name = findViewById(R.id.txtname_result);
         TextView agency = findViewById(R.id.txtagency_result);
         TextView location = findViewById(R.id.txtlocation_result);
+        TextView policies = findViewById(R.id.txtPolicies_result);
         TextView meet = findViewById(R.id.btnMeet);
         TextView call = findViewById(R.id.btnCall);
-        final ConstraintLayout mapview = findViewById(R.id.mapView);
+        final ConstraintLayout mapView = findViewById(R.id.mapView);
 
         //Display toolbar
         showHeader();
@@ -55,9 +60,11 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
         //Extracting Data from previous activity
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
+        assert extras != null;
         name.setText(extras.getString("name"));
         agency.setText(extras.getString("agency"));
         location.setText(extras.getString("location"));
+        policies.setText(extras.getString("policies"));
         number = extras.getString("number");
         latitude = extras.getDouble("latitude", 0.0);
         longitude = extras.getDouble("longitude", 0.0);
@@ -66,12 +73,13 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
         //google map activity
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
+        assert mapFragment != null;
         mapFragment.getMapAsync(this);
 
         meet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mapview.setVisibility(View.VISIBLE);
+                mapView.setVisibility(View.VISIBLE);
             }
         });
 
@@ -91,11 +99,9 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
         double Lat_coordinate = latitude;
         double Lng_coordinate = longitude;
 
-        Log.d("Test_var", "lat" + (Double.toString(latitude) + " lon " + Double.toString(longitude)));
-
         //zoom location
         LatLng coordinates = new LatLng(Lat_coordinate, Lng_coordinate);
-        CameraUpdate location = CameraUpdateFactory.newLatLngZoom(coordinates, 18);
+        CameraUpdate location = CameraUpdateFactory.newLatLngZoom(coordinates, 16);
         googleMap.animateCamera(location);
 
         //add location circle
@@ -104,8 +110,7 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
                 .center(markerOptions.getPosition())
                 .radius(150)
                 .fillColor(0x220000DD);
-        googleMap.addCircle(circleOptions);
-        */
+        googleMap.addCircle(circleOptions);*/
 
         //view map
         LatLng sydney = new LatLng(Lat_coordinate, Lng_coordinate);
@@ -119,7 +124,7 @@ public class ResultsActivity extends AppCompatActivity implements OnMapReadyCall
     public void showHeader() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
     }
 

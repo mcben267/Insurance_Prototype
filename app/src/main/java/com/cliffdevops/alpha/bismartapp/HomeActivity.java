@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,21 +14,25 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import adapter.InsuranceViewAdapter;
 import model.InsuranceItem;
 
 public class HomeActivity extends AppCompatActivity implements InsuranceViewAdapter.OnLoanListener {
+
     private SharedPreferences pref;
     private InsuranceViewAdapter mAdapter;
     private RecyclerView recyclerView;
     private List<InsuranceItem> InsuranceList = new ArrayList<>();
     private Context context;
+    private String Policy;
 
+
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +41,7 @@ public class HomeActivity extends AppCompatActivity implements InsuranceViewAdap
 
         recyclerView = findViewById(R.id.insuranceList);
         TextView currentUser = findViewById(R.id.txtUsername);
-        currentUser.setText("Welcome, " + pref.getString("name",""));
+        currentUser.setText("Welcome, " + pref.getString("name", ""));
 
         showHeader();
         intiRecycleView();
@@ -46,7 +51,7 @@ public class HomeActivity extends AppCompatActivity implements InsuranceViewAdap
     public void showHeader(){
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
     }
 
@@ -132,19 +137,11 @@ public class HomeActivity extends AppCompatActivity implements InsuranceViewAdap
         mAdapter.notifyDataSetChanged();
     }
 
-    public void showToast(final String Text) {
-        this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(HomeActivity.this,
-                        Text, Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
     @Override
     public void onNoteClick(String position) {
+        Policy = position;
         Intent i = new Intent(HomeActivity.this, SearchActivity.class);
+        pref.edit().putString("policy", Policy).apply();
         startActivity(i);
         finish();
     }

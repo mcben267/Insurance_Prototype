@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -44,7 +45,6 @@ import model.AgentItem;
 public class SearchActivity extends AppCompatActivity implements AgentViewAdapter.OnAgentListener,
         AdapterView.OnItemSelectedListener {
 
-
     private SharedPreferences pref;
     private AgentViewAdapter mAdapter;
     private RecyclerView recyclerView;
@@ -54,13 +54,7 @@ public class SearchActivity extends AppCompatActivity implements AgentViewAdapte
     private Button search;
     private LinearLayoutManager layoutManager;
     private Spinner locationSpinner, zoneSpinner;
-
     private String UserID, City, Zone;
-    private int fail;
-
-    private String uniqueID, name, agency, score, location,
-            mobile, latitude, longitude;
-    private int icon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +62,7 @@ public class SearchActivity extends AppCompatActivity implements AgentViewAdapte
         setContentView(R.layout.activity_search);
         pref = getSharedPreferences("login", MODE_PRIVATE);
 
+        TextView policy = findViewById(R.id.txtPolicy);
         locationSpinner = findViewById(R.id.spinnerLocation);
         zoneSpinner = findViewById(R.id.spinnerZone);
         recyclerView = findViewById(R.id.agentsList);
@@ -75,6 +70,7 @@ public class SearchActivity extends AppCompatActivity implements AgentViewAdapte
         search = findViewById(R.id.btnSearch);
 
         UserID = pref.getString("user_id", "");
+        policy.setText(pref.getString("policy", ""));
 
         showHeader();
         updateLocationSpinner();
@@ -100,12 +96,14 @@ public class SearchActivity extends AppCompatActivity implements AgentViewAdapte
             case R.id.btnProfile:
                 i = new Intent(this, ProfileActivity.class);
                 startActivity(i);
+                overridePendingTransition(0, 0);
                 finish();
                 break;
 
             case R.id.btnHelp:
                 i = new Intent(this, HelpActivity.class);
                 startActivity(i);
+                overridePendingTransition(0, 0);
                 finish();
                 break;
 
@@ -113,10 +111,8 @@ public class SearchActivity extends AppCompatActivity implements AgentViewAdapte
                 pref.edit().putBoolean("logged", false).apply();
                 i = new Intent(this, LoginActivity.class);
                 startActivity(i);
+                overridePendingTransition(0, 0);
                 finish();
-                break;
-
-            default:
                 break;
         }
 
@@ -195,26 +191,27 @@ public class SearchActivity extends AppCompatActivity implements AgentViewAdapte
 
     }
 
-    private void populateData() {
+    /*private void populateData() {
 
         int[] insuranceIcon = {
                 R.drawable.logo,
                 R.drawable.ic_account,
         };
 
-        /* params: uniqueID, name, agency, score, location, mobile, latitude, longitude */
+        *//* params: uniqueID, name, agency, score, location, mobile, latitude, longitude *//*
 
         AgentItem item = new AgentItem("1234567", "Alpha Maina", "Cliff and Associates", "4.5",
-                "CBD GPO", "+254711545036", "22", "5.56");
+                "CBD GPO", "+254711545036", 22, "5.56", "Education");
         AgentList.add(item);
         mAdapter.notifyDataSetChanged();
 
-    }
+    }*/
 
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(SearchActivity.this, HomeActivity.class);
         startActivity(intent);
+        overridePendingTransition(0, 0);
         finish();
     }
 
@@ -230,59 +227,38 @@ public class SearchActivity extends AppCompatActivity implements AgentViewAdapte
     public void showHeader() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setDisplayUseLogoEnabled(true);
+        this.getSupportActionBar().setDisplayShowTitleEnabled(false);
+        this.getSupportActionBar().setDisplayUseLogoEnabled(true);
     }
-
-/*    @Override
-    public void onNoteClick(String Name,String Agency,String Mobile,String Latitude,
-                            String Longitude,String Location ) {
-
-        Bundle extras = new Bundle();
-        extras.putString("name",Name);
-        extras.putString("agency",Agency);
-        extras.putString("number",Mobile);
-        extras.putString("latitude",Latitude);
-        extras.putString("longitude",Longitude);
-        extras.putString("location",Location);
-
-        showToast(Name);
-
-        Intent intent = new Intent(SearchActivity.this, ResultsActivity.class);
-                    intent.putExtras(extras);
-                    startActivity(intent);
-    }*/
 
     public void showToast(final String Text) {
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 Toast.makeText(SearchActivity.this,
-                        Text, Toast.LENGTH_LONG).show();
+                        Text, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     @Override
-    public void onItemClicked(String Name, String Agency, String Location, String Mobile, String Latitude,
-                              String Longitude) {
-
-        double Latitude_code, Longitude_code;
-        Latitude_code = Double.parseDouble(Latitude);
-        Longitude_code = Double.parseDouble(Longitude);
+    public void onItemClicked(String Name, String Agency, String Location, String Mobile, double Latitude,
+                              double Longitude, String Policies) {
 
         Bundle extras = new Bundle();
         extras.putString("name", Name);
         extras.putString("agency", Agency);
         extras.putString("number", Mobile);
-        extras.putDouble("latitude", Latitude_code);
-        extras.putDouble("longitude", Longitude_code);
         extras.putString("location", Location);
+        extras.putString("policies", Policies);
+        extras.putDouble("latitude", Latitude);
+        extras.putDouble("longitude", Longitude);
 
         showToast(Name);
 
         Intent intent = new Intent(SearchActivity.this, ResultsActivity.class);
         intent.putExtras(extras);
+        overridePendingTransition(0, 0);
         startActivity(intent);
     }
 
@@ -296,9 +272,10 @@ public class SearchActivity extends AppCompatActivity implements AgentViewAdapte
             @Override
             public void onResponse(String response) {
 
-                Log.d("Test", "Response >>" + response);
-
                 int cartSize = response.length();
+                String uniqueID, name, agency, score, location,
+                        mobile, policies;
+                double latitude, longitude;
 
                 try {
                     if (cartSize > 2) {
@@ -314,13 +291,16 @@ public class SearchActivity extends AppCompatActivity implements AgentViewAdapte
                                     score = object.getString("score") + " / 5",
                                     location = object.getString("location"),
                                     mobile = object.getString("mobile"),
-                                    latitude = object.getString("Lat_coordinate"),
-                                    longitude = object.getString("Lng_coordinate")
+                                    policies = object.getString("policies"),
+                                    latitude = object.getDouble("Lat_coordinate"),
+                                    longitude = object.getDouble("Lng_coordinate")
+
                             );
 
                             progressBar.setVisibility(View.GONE);
                             AgentList.add(item);
                             mAdapter.notifyDataSetChanged();
+
                         }
                     } else {
                         progressBar.setVisibility(View.GONE);
@@ -348,7 +328,6 @@ public class SearchActivity extends AppCompatActivity implements AgentViewAdapte
                 params.put("city", City);
                 params.put("zone", Zone);
 
-                Log.d("Test: ", UserID + " " + City + " " + Zone);
                 return params;
             }
         };
