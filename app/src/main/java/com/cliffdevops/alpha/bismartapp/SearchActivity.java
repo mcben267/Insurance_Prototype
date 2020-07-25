@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import adapter.AgentViewAdapter;
 import model.AgentItem;
@@ -161,7 +162,7 @@ public class SearchActivity extends AppCompatActivity implements AgentViewAdapte
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String zone = parent.getItemAtPosition(position).toString();
                 if (zone.equals("Select")) {
-
+                    Zone = null;
                 } else {
                     Zone = zone;
                     search.setVisibility(View.VISIBLE);
@@ -190,22 +191,6 @@ public class SearchActivity extends AppCompatActivity implements AgentViewAdapte
 
     }
 
-    /*private void populateData() {
-
-        int[] insuranceIcon = {
-                R.drawable.logo,
-                R.drawable.ic_account,
-        };
-
-        *//* params: uniqueID, name, agency, score, location, mobile, latitude, longitude *//*
-
-        AgentItem item = new AgentItem("1234567", "Alpha Maina", "Cliff and Associates", "4.5",
-                "CBD GPO", "+254711545036", 22, "5.56", "Education");
-        AgentList.add(item);
-        mAdapter.notifyDataSetChanged();
-
-    }*/
-
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(SearchActivity.this, HomeActivity.class);
@@ -226,7 +211,7 @@ public class SearchActivity extends AppCompatActivity implements AgentViewAdapte
     public void showHeader() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        this.getSupportActionBar().setDisplayShowTitleEnabled(false);
+        Objects.requireNonNull(this.getSupportActionBar()).setDisplayShowTitleEnabled(false);
         this.getSupportActionBar().setDisplayUseLogoEnabled(true);
     }
 
