@@ -48,7 +48,13 @@ public class HomeActivity extends AppCompatActivity implements InsuranceViewAdap
 
     }
 
-    public void showHeader(){
+    @Override
+    public void onBackPressed() {
+        finish();
+        System.exit(0);
+    }
+
+    public void showHeader() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);

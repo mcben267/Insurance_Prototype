@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -273,9 +272,6 @@ public class SearchActivity extends AppCompatActivity implements AgentViewAdapte
             public void onResponse(String response) {
 
                 int cartSize = response.length();
-                String uniqueID, name, agency, score, location,
-                        mobile, policies;
-                double latitude, longitude;
 
                 try {
                     if (cartSize > 2) {
@@ -285,16 +281,15 @@ public class SearchActivity extends AppCompatActivity implements AgentViewAdapte
                             JSONObject object = array.getJSONObject(i);
 
                             AgentItem item = new AgentItem(
-                                    uniqueID = object.getString("uniqueID"),
-                                    name = object.getString("name"),
-                                    agency = object.getString("agency"),
-                                    score = object.getString("score") + " / 5",
-                                    location = object.getString("location"),
-                                    mobile = object.getString("mobile"),
-                                    policies = object.getString("policies"),
-                                    latitude = object.getDouble("Lat_coordinate"),
-                                    longitude = object.getDouble("Lng_coordinate")
-
+                                    object.getString("uniqueID"),
+                                    object.getString("name"),
+                                    object.getString("agency"),
+                                    object.getString("score") + " / 5",
+                                    object.getString("location"),
+                                    object.getString("mobile"),
+                                    object.getString("policies"),
+                                    object.getDouble("Lat_coordinate"),
+                                    object.getDouble("Lng_coordinate")
                             );
 
                             progressBar.setVisibility(View.GONE);
@@ -309,7 +304,7 @@ public class SearchActivity extends AppCompatActivity implements AgentViewAdapte
                 } catch (JSONException ex) {
                     progressBar.setVisibility(View.GONE);
                     ex.printStackTrace();
-                    showToast("Request Failed");
+                    showToast("No records found");
                 }
 
             }
@@ -318,7 +313,7 @@ public class SearchActivity extends AppCompatActivity implements AgentViewAdapte
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         progressBar.setVisibility(View.GONE);
-                        showToast("Error: Request Failed");
+                        showToast("Request failed try again");
                     }
                 }) {
             @Override

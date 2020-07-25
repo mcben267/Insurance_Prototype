@@ -133,15 +133,15 @@
                     android:visibility="gone" />
             </LinearLayout>
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/linearLayout3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal"
+                android:gravity="center_horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:layout_editor_absoluteX="8dp">
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <EditText
                     android:id="@+id/otp_edit_text1"
@@ -149,80 +149,95 @@
                     android:layout_height="@dimen/et_otp_height"
                     android:layout_marginEnd="@dimen/margin_right_otp"
                     android:background="@color/otp_editext_color"
+                    android:hint="0"
                     android:inputType="number"
                     android:maxLength="1"
-                    android:hint="0"
-                    android:ems="10"
-                    android:textColorHint="@color/white"
                     android:textAlignment="center"
-                    android:textColor="@color/trueBlack" />
+                    android:textColor="@color/trueBlack"
+                    android:textColorHint="@color/white"
+                    android:focusable="true"
+                    android:nextFocusDown="@id/otp_edit_text2" />
 
                 <EditText
                     android:id="@+id/otp_edit_text2"
+                    android:layout_toEndOf="@id/otp_edit_text1"
                     android:layout_width="@dimen/et_otp_width"
                     android:layout_height="@dimen/et_otp_height"
                     android:layout_marginEnd="@dimen/margin_right_otp"
-                    android:background="@color/otp_editext_color"                    android:inputType="number"
-                    android:maxLength="1"
+                    android:background="@color/otp_editext_color"
                     android:hint="0"
-                    android:textColorHint="@color/white"
+                    android:ems="1"
+                    android:inputType="number"
+                    android:maxLength="1"
                     android:textAlignment="center"
-                    android:textColor="@color/trueBlack" />
+                    android:textColor="@color/trueBlack"
+                    android:textColorHint="@color/white"
+                    android:focusable="true"
+                    android:nextFocusDown="@id/otp_edit_text3" />
 
                 <EditText
                     android:id="@+id/otp_edit_text3"
+                    android:layout_toEndOf="@id/otp_edit_text2"
                     android:layout_width="@dimen/et_otp_width"
                     android:layout_height="@dimen/et_otp_height"
                     android:layout_marginEnd="@dimen/margin_right_otp"
                     android:background="@color/otp_editext_color"
+                    android:hint="0"
                     android:inputType="number"
                     android:maxLength="1"
-                    android:hint="0"
-                    android:textColorHint="@color/white"
                     android:textAlignment="center"
-                    android:textColor="@color/trueBlack" />
+                    android:textColor="@color/trueBlack"
+                    android:textColorHint="@color/white"
+                    android:focusable="true"
+                    android:nextFocusDown="@id/otp_edit_text4" />
 
                 <EditText
                     android:id="@+id/otp_edit_text4"
+                    android:layout_toEndOf="@id/otp_edit_text3"
                     android:layout_width="@dimen/et_otp_width"
                     android:layout_height="@dimen/et_otp_height"
                     android:layout_marginEnd="@dimen/margin_right_otp"
                     android:background="@color/otp_editext_color"
-                    android:imeOptions="actionDone"
+                    android:hint="0"
                     android:inputType="number"
                     android:maxLength="1"
-                    android:hint="0"
-                    android:textColorHint="@color/white"
                     android:textAlignment="center"
-                    android:textColor="@color/trueBlack" />
+                    android:textColor="@color/trueBlack"
+                    android:textColorHint="@color/white"
+                    android:focusable="true"
+                    android:nextFocusDown="@id/otp_edit_text5" />
 
                 <EditText
                     android:id="@+id/otp_edit_text5"
                     android:layout_width="@dimen/et_otp_width"
                     android:layout_height="@dimen/et_otp_height"
                     android:layout_marginEnd="@dimen/margin_right_otp"
+                    android:layout_toEndOf="@id/otp_edit_text4"
                     android:background="@color/otp_editext_color"
-                    android:imeOptions="actionDone"
+                    android:focusable="true"
+                    android:hint="0"
                     android:inputType="number"
                     android:maxLength="1"
-                    android:hint="0"
-                    android:textColorHint="@color/white"
+                    android:nextFocusDown="@id/otp_edit_text6"
                     android:textAlignment="center"
-                    android:textColor="@color/trueBlack" />
+                    android:textColor="@color/trueBlack"
+                    android:textColorHint="@color/white" />
 
                 <EditText
                     android:id="@+id/otp_edit_text6"
+                    android:layout_toEndOf="@id/otp_edit_text5"
                     android:layout_width="@dimen/et_otp_width"
                     android:layout_height="@dimen/et_otp_height"
                     android:background="@color/otp_editext_color"
+                    android:hint="0"
                     android:imeOptions="actionDone"
                     android:inputType="number"
                     android:maxLength="1"
                     android:textAlignment="center"
                     android:textColor="@color/trueBlack"
-                    android:hint="0"
-                    android:textColorHint="@color/white"/>
-            </LinearLayout>
+                    android:textColorHint="@color/white"
+                    android:focusable="true" />
+            </RelativeLayout>
 
             <ImageView
                 android:id="@+id/imageView2"

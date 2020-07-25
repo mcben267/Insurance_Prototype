@@ -5,7 +5,6 @@
     <string name="api_key">AIzaSyCOmck4TZtKGQnKmoj1VH0_Xv0YQTAZffI</string>
 
     <string-array name="city">
-        <item>Select</item>
         <item>Nairobi</item>
         <item>Mombasa</item>
     </string-array>
