@@ -9,7 +9,7 @@ able to chose to talk and meet the
 agent closest to them (Uber for
 insurance sales)._
 
-Screenshots
+###Screenshots
   <img src="https://github.com/mcben267/Insurance_Prototype/blob/master/app_screenshot/image_1.jpg" width="200" height="400">
   
 <p align="center">
